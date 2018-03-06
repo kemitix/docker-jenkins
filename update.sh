@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+cd `dirname $0`
 echo "Update to latest version of Jenkins..."
 docker pull jenkins/jenkins:latest
 echo "Shutting down Jenkins..."

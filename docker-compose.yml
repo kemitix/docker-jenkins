@@ -4,9 +4,25 @@ services:
         #image: jenkins/jenkins:latest
         build: .
         container_name: jenkins
+        restart: unless-stopped
         ports:
               - '9090:8080'
               - '50000:50000'
+              - '9091:9091'
         volumes:
              - /home/pcampbell/Volumes/JenkinsHome:/var/jenkins_home
+             - /home/pcampbell:/home/pcampbell
+        networks:
+             - jenkins
         
+    mailserver:
+        image: mailhog/mailhog
+        container_name: mail
+        ports:
+            - '1025:1025'
+            - '8025:8025'
+        restart: unless-stopped
+        networks:
+            - jenkins
+networks:
+    jenkins:

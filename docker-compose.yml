@@ -80,3 +80,4 @@ volumes:
   sonarqube_bundled-plugins:
   postgresql:
   postgresql_data:
+  nexus:

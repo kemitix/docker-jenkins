@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
 cd `dirname $0`
-echo "Update to latest version of Jenkins..."
-docker pull jenkins/jenkins:latest
-echo "Shutting down Jenkins..."
+echo "Update to latest version of images..."
+docker pull jenkins/jenkins
+docker-compose pull
+echo "Shutting down Jenkins Stack..."
 docker-compose down
-echo "Rebuilding and starting Jenkins..."
+echo "Rebuilding and starting Jenkins Stack..."
 docker-compose up --build -d
 echo "Done."
-docker logs -f jenkins
+docker-compose logs -f
 

@@ -2,29 +2,30 @@ version: '2'
 services:
 
   jenkins:
-    #image: jenkins/jenkins:latest
     build: jenkins/
     container_name: jenkins
     restart: unless-stopped
-    ports:
-      - 9090:8080
-      - 50000:50000
-      - 9091:9091
+    expose:
+      - 8080
     volumes:
-#- /home/pcampbell/Volumes/JenkinsHome:/var/jenkins_home
       - jenkins_home:/var/jenkins_home
       - /home/pcampbell:/home/pcampbell
     networks:
       - jenkins
-
+      - jenkins-mail
+      - proxy
+    environment:
+      VIRTUAL_HOST: jenkins.kemitix.net
+  
   sonarqube:
     image: sonarqube
     container_name: sonarqube
     restart: unless-stopped
-    ports:
-      - 9000:9000
+    expose:
+      - 9000
     environment:
-      - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
+      SONARQUBE_JDBC_URL: jdbc:postgresql://db:5432/sonar
+      VIRTUAL_HOST: sonarqube.kemitix.net
     volumes:
       - sonarqube_conf:/opt/sonarqube/conf
       - sonarqube_data:/opt/sonarqube/data
@@ -32,6 +33,9 @@ services:
       - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     networks:
       - jenkins
+      - jenkins-mail
+      - proxy
+      - sonar-db
 
   db:
     image: postgres
@@ -44,7 +48,7 @@ services:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
     networks:
-      - jenkins
+      - sonar-db
 
   mailserver:
     image: mailhog/mailhog
@@ -54,10 +58,9 @@ services:
       - 8025:8025
     restart: unless-stopped
     networks:
-      - jenkins
+      - jenkins-mail
 
   nexus:
-    #image: sonatype/nexus
     build: nexus/
     container_name: nexus
     ports:
@@ -68,9 +71,22 @@ services:
     networks:
       - jenkins
 
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: reverse-proxy
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy
+
 networks:
   jenkins:
-    driver: bridge
+  jenkins-mail:
+  sonar-db:
+  proxy:
 
 volumes:
   jenkins_home:

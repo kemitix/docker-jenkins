@@ -2,7 +2,7 @@
 
 cd `dirname $0`
 echo "Update to latest version of images..."
-docker pull jenkins/jenkins
+(cd jenkins && ./build-jenkins.sh)
 docker-compose pull
 echo "Shutting down Jenkins Stack..."
 docker-compose down

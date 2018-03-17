@@ -72,7 +72,9 @@ services:
       - jenkins
 
   nginx-proxy:
-    image: jwilder/nginx-proxy
+    #image: jwilder/nginx-proxy
+    #image: kemitix/nginx-proxy:latest
+    build: reverse-proxy/nginx-proxy
     container_name: reverse-proxy
     restart: unless-stopped
     ports:

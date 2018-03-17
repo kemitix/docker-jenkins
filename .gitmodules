@@ -2,3 +2,7 @@
 	path = jenkins/jenkins-docker
 	url = git@github.com:kemitix/jenkins-docker.git
 	branch = master
+[submodule "reverse-proxy/nginx-proxy"]
+	path = reverse-proxy/nginx-proxy
+	url = git@github.com:kemitix/nginx-proxy.git
+	branch = master

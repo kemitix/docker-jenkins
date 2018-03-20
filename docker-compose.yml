@@ -83,7 +83,8 @@ services:
       - proxy
 
   squid:
-    image: sameersbn/squid
+    #image: sameersbn/squid
+    build: squid
     container_name: proxy
     restart: unless-stopped
     ports:

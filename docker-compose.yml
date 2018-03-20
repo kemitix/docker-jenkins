@@ -84,11 +84,14 @@ services:
       - proxy
 
   squid:
-    image: minimum2scp/squid
+    image: sameersbn/squid:3.3.8-23
     container_name: proxy
     restart: unless-stopped
     ports:
       - 3128:3128
+    volumes:
+      - squid_cache:/var/spool/squid3
+      - ./squid/squid.conf:/etc/squid3/squid.conf
 
 networks:
   jenkins:
@@ -105,3 +108,4 @@ volumes:
   postgresql:
   postgresql_data:
   nexus:
+  squid_cache:

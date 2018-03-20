@@ -83,6 +83,13 @@ services:
     networks:
       - proxy
 
+  squid:
+    image: minimum2scp/squid
+    container_name: proxy
+    restart: unless-stopped
+    ports:
+      - 3128:3128
+
 networks:
   jenkins:
   jenkins-mail:

@@ -73,7 +73,6 @@ services:
 
   nginx-proxy:
     image: jwilder/nginx-proxy
-    #build: reverse-proxy/nginx-proxy
     container_name: reverse-proxy
     restart: unless-stopped
     ports:
@@ -84,7 +83,7 @@ services:
       - proxy
 
   squid:
-    image: sameersbn/squid:3.3.8-23
+    image: sameersbn/squid
     container_name: proxy
     restart: unless-stopped
     ports:

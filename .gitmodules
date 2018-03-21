@@ -6,3 +6,7 @@
 	path = reverse-proxy/nginx-proxy
 	url = git@github.com:kemitix/nginx-proxy.git
 	branch = master
+[submodule "squid"]
+	path = squid
+	url = git@github.com:kemitix/docker-squid.git
+	branch = master

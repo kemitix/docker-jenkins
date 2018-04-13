@@ -1,3 +1,5 @@
 jenkins.kemitix.net
 tls pcampbell@kemitix.net
-proxy / jenkins:8080
+proxy / jenkins:8080 {
+	transparent
+}

@@ -1,17 +1,6 @@
 version: '2'
 services:
 
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: reverse-proxy
-    restart: unless-stopped
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    networks:
-      - proxy
 
   caddy:
     image: abiosoft/caddy:latest
@@ -20,16 +9,14 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 2015:2015
     volumes:
       - caddy:/etc/caddy
       - /home/pcampbell/Docker/Jenkins/caddy/Caddyfile:/etc/Caddyfile
     networks:
-      - proxy
+      - proxy-jenkins
     environment:
       CADDYPATH: /etc/caddy
       ACME_AGREE: "true"
-      VIRTUAL_HOST: jenkins.kemitix.net
 
   jenkins:
     build: jenkins/
@@ -41,9 +28,8 @@ services:
       - jenkins_home:/var/jenkins_home
       - /home/pcampbell:/home/pcampbell
     networks:
-      - jenkins
+      - proxy-jenkins
       - jenkins-mail
-      - proxy
   
   mailserver:
     image: mailhog/mailhog
@@ -63,8 +49,6 @@ services:
     restart: unless-stopped
     volumes:
       - nexus:/sonatype-work
-    networks:
-      - jenkins
 
   squid:
     #image: sameersbn/squid
@@ -78,9 +62,9 @@ services:
       - ./squid/squid.conf:/etc/squid3/squid.conf
 
 networks:
-  jenkins:
+  public-proxy:
+  proxy-jenkins:
   jenkins-mail:
-  proxy:
 
 volumes:
   jenkins_home:

@@ -1,6 +1,18 @@
 version: '2'
 services:
 
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: reverse-proxy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - proxy
+
   caddy:
     image: abiosoft/caddy:latest
     container_name: caddy
@@ -17,6 +29,7 @@ services:
     environment:
       CADDYPATH: /etc/caddy
       ACME_AGREE: "true"
+      VIRTUAL_HOST: jenkins.kemitix.net
 
   jenkins:
     build: jenkins/
@@ -31,8 +44,6 @@ services:
       - jenkins
       - jenkins-mail
       - proxy
-    environment:
-      VIRTUAL_HOST: jenkins.kemitix.net
   
   mailserver:
     image: mailhog/mailhog
@@ -54,17 +65,6 @@ services:
       - nexus:/sonatype-work
     networks:
       - jenkins
-
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: reverse-proxy
-    restart: unless-stopped
-    ports:
-      - 80:80
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    networks:
-      - proxy
 
   squid:
     #image: sameersbn/squid

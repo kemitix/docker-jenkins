@@ -8,5 +8,5 @@
 	branch = master
 [submodule "squid"]
 	path = squid
-	url = git@github.com:kemitix/docker-squid.git
+	url = git@gitlab.com:kemitix/docker-squid.git
 	branch = master

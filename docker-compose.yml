@@ -24,6 +24,7 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /home/pcampbell:/home/pcampbell
+      - /home/pcampbell/.gnupg:/var/jenkins_home/.gnupg
   
   mailserver:
     image: mailhog/mailhog

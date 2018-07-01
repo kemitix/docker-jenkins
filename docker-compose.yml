@@ -1,7 +1,6 @@
 version: '2'
 services:
 
-
   caddy:
     image: abiosoft/caddy:latest
     container_name: caddy
@@ -12,8 +11,6 @@ services:
     volumes:
       - caddy:/etc/caddy
       - /home/pcampbell/Docker/Jenkins/caddy/Caddyfile:/etc/Caddyfile
-    networks:
-      - proxy-jenkins
     environment:
       CADDYPATH: /etc/caddy
       ACME_AGREE: "true"
@@ -27,9 +24,6 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /home/pcampbell:/home/pcampbell
-    networks:
-      - proxy-jenkins
-      - jenkins-mail
   
   mailserver:
     image: mailhog/mailhog
@@ -38,8 +32,6 @@ services:
       - 1025:1025
       - 8025:8025
     restart: unless-stopped
-    networks:
-      - jenkins-mail
 
   nexus:
     build: nexus/
@@ -60,11 +52,6 @@ services:
     volumes:
       - squid_cache:/var/spool/squid3
       - ./squid/squid.conf:/etc/squid3/squid.conf
-
-networks:
-  public-proxy:
-  proxy-jenkins:
-  jenkins-mail:
 
 volumes:
   jenkins_home:

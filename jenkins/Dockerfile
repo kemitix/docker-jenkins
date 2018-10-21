@@ -11,6 +11,5 @@ RUN apt-get update && \
 		rsync \
 	&& \
 	rm -rf /var/lib/apt/lists/*
-COPY gitlab-branch-source.* /var/jenkins_home/plugins/
 USER jenkins
 
